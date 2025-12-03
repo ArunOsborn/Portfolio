@@ -1,0 +1,166 @@
+@import "style dark.css";
+
+body {
+	background-color: #6babd2;
+}
+
+/*Global*/
+#container
+{
+}
+
+main
+{
+	/*padding: 5px;*/
+}
+
+mark {
+	background: #361999;
+	color: #35424a;
+}
+
+footer
+{
+	color: #35424a;
+}
+
+
+/*Header*/
+header {
+	/**background: #b3cbda;**/
+	color: rgb(185, 40, 0);
+	/**border-bottom: #FEB700 3px solid;**/
+}
+
+header .nav-text
+{
+	border-bottom: #FEB700 0px solid;
+}
+header .highlight, header .current a {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/*nav*/
+header a
+{
+	color: white;
+}
+header a:hover
+{
+	color: #81BD00;
+}
+
+
+/*logo*/
+#logo img
+{
+}
+
+.nav-text
+{
+	background-color: #b3cbda;
+	border: #ffffff 3px solid;
+}
+
+/*Main in Page*/
+
+h2
+{
+	color: #ffffff;
+	border-bottom: #FEB700 3px solid;
+}
+
+h3, h4
+{
+	color: #3E73DE;
+}
+
+
+p
+{
+	color: #ffffff;
+}
+
+q
+{
+	color: rgb(190, 255, 201);
+	font-style: italic;
+}
+
+a
+{
+	color: #001aff;
+}
+
+
+.split
+{
+	border: #00abe1 2.5px solid;
+}
+
+main ul, ol
+{
+	/**background: #F64F23;**/
+	border: #FEB700 3px solid;
+	color: white;
+}
+
+.center
+{
+}
+
+.pp
+{
+}
+
+
+mark
+{
+	background-color: #ffffff;
+}
+
+.channel
+{
+	color: #6C7EB8;
+}
+
+#vertical-nav ul
+{
+	background-color: #b3cbda;
+	border: #FEB700 solid;
+	
+}
+#vertical-nav a
+{
+	color: rgb(255, 255, 255);
+}
+
+#floating-notice
+{
+	border: #FEB700 4px solid;
+	background-color: #b3cbda;
+	color: #35424a;
+}
+
+/** Mobile Devices **/
+@media only all and (max-width:768px)
+{
+    main
+    {
+		background-color: #b3cbda;
+		border: #00abe1 0px solid;
+    }
+	.nav-text {
+		border: none;
+	}
+	.nav-text nav
+	{
+		background-color: #b3cbda;
+		width: 99%; /*Compensates for border*/
+	}
+}
+
+footer
+{
+}

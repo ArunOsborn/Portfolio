@@ -1,0 +1,106 @@
+@import "style dark.css";
+
+body
+{
+	background: radial-gradient(#004b79,#000);
+	min-height: min-content;
+}
+
+main
+{
+	margin-top: 0;
+}
+
+footer
+{
+	bottom: initial;
+	height: initial;
+}
+
+h2
+{
+	font-size: small;
+}
+
+form
+{
+	width: 100%;
+	max-width: 7cm;
+}
+
+a
+{
+	color: #989898;
+}
+
+button,.button
+{
+	color: white;
+	box-shadow: 0px 0px 2px 1px black;
+	transition: all 200ms;
+}
+button:hover,.button:hover
+{
+	box-shadow: 0px 0px 4px 1px rgb(255, 255, 255);
+}
+
+.submit-button
+{
+	border-radius: 50%;
+	background-size: cover;
+}
+
+input
+{
+	width: 70%;
+}
+
+#persons
+{
+	width: 80%;
+	border: none;
+}
+
+form input
+{
+	width: initial;
+	border: none;
+	border-bottom: 3px solid #a00;
+	border-radius: 3px;
+	box-shadow: 0 0 10px black;
+	background: #1e1e1e;
+	color: white;
+}
+
+.input-box
+{
+	width: 40%;
+	display: inline-flex;
+	background-color: white;
+	border: #00abe1 3px solid;
+	border-radius: 10px;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-text h1
+{
+	margin: 10px 0 0 0;
+}
+
+.confirmed-box
+{
+	display: contents;
+	display: inline-block;
+	background-color: rgb(30, 30, 30);
+	border-radius: 50vh;
+	padding: 2px 10px;
+	margin: 5px;
+	color: white;
+}
+.confirmed-box img
+{
+	width: 10px;
+	height: 10px;
+	cursor: pointer;
+}

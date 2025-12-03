@@ -4,6 +4,10 @@
 			<mat-icon>home</mat-icon>
 			About Me
 		</button>
+		<button mat-button color="primary" routerLink="/apps/drinkage" matTooltip="Home" routerLinkActive="active" class="nav-button" [queryParamsHandling]="'preserve'">
+			<mat-icon>local_drink</mat-icon>
+			Drinkage
+		</button>
 	</mat-toolbar>
 	<router-outlet></router-outlet>
 </main>
