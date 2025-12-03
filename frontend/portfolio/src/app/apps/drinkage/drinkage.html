@@ -1,31 +1,36 @@
 
 <header>
     <div id="container">
-            <h1>Paper 98 Games <span class="highlight">Drinkage</span></h1>
+        <h1>Paper 98 Games <span class="highlight">Drinkage</span></h1>
     </div>
-    
 </header>
 
 <main>
     <h2>Drinkage 2.0</h2>
-    <div class="card">
-        <p>Null</p>
+    <div class="card" #card>
+        <p [innerHTML]="cardContent"></p>
+        @for (btn of cardButtons; track btn.label) {
+            <button (click)="btn.action()">{{ btn.label }}</button>
+        }
     </div>
 
-    <div id="next-button">
+    <div id="next-button" (click)="nextCard()">
         Next
     </div>
 
     <div id="names">
-        
+        @for (name of names; track name) {
+            <div class="confirmed-box">
+                <a>{{ name }}</a>
+                <img id="remove-person" src="/assets/legacy-media/Cross.png" (click)="removeName(name)" />
+            </div>
+        }
     </div>
 
-    <form onsubmit="addName()" id="name-form">
-        <input type=text id="name" name="name" placeholder="Enter new name">
-
-        <input type=submit value="" class="submit-button" name="submit" onclick="addName()">
+    <form (ngSubmit)="addName()" id="name-form">
+        <input type="text" id="name" name="name" placeholder="Enter new name" [(ngModel)]="nameInputValue" #nameInput>
+        <input type="submit" value="" class="submit-button" name="submit">
     </form>
-    
 </main>
 
 <footer>

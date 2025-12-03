@@ -286,7 +286,7 @@ mark
 	border: red 5px outset;
 	border-radius: 0.5cm;
 	background-color: white;
-	background-image: url("/pattern.png");
+	background-image: url("/assets/legacy-media/pattern.png");
 	margin: auto;
 	padding: 0.6cm;
 	min-height: 50vh;
