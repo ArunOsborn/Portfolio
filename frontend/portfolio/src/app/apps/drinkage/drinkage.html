@@ -1,5 +1,5 @@
 <main>
-    <h2>Drinkage 2.0</h2>
+    <h2>Drinkage 1.4.6 Port</h2>
     <div class="card" #card>
         <p [innerHTML]="cardContent"></p>
         @for (btn of cardButtons; track btn.label) {
@@ -7,8 +7,10 @@
         }
     </div>
 
-    <div id="next-button" (click)="nextCard()">
-        Next
+    <div style="width: 100%;">
+        <button mat-flat-button id="next-button" style="margin: 5px auto -10px auto; display: block;" (click)="nextCard()">
+            Next
+        </button>
     </div>
 
     <div id="names">
@@ -22,7 +24,9 @@
 
     <form (ngSubmit)="addName()" id="name-form">
         <input type="text" id="name" name="name" placeholder="Enter new name" [(ngModel)]="nameInputValue" #nameInput>
-        <input type="submit" value="" class="submit-button" name="submit">
+        <button mat-icon-button type="submit" mat-icon-button>
+            <mat-icon>add_circle</mat-icon>
+        </button>
     </form>
 </main>
 

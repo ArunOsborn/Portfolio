@@ -182,20 +182,6 @@ input
 	background-color: white;
 }
 
-
-button,.button,#next-button,#submit-button
-{
-	background-color: #00abe1;
-	border-style: none;
-	border-radius: 10px;
-	cursor: pointer;
-	width: min-content;
-	padding: 5px 30px 5px 30px;
-	margin: 5px;
-	margin-top: 5px;
-	display: inline-block;
-}
-
 .split
 {
 	margin: 15px 10px 15px 10px;
@@ -299,33 +285,6 @@ mark
 	color: #35424a;
 	font-size: large;
 	padding: 2vh 0 0 0 ;
-}
-
-
-
-#next-button
-{
-	position: relative;
-	margin: 10px auto;
-	margin-top: 5px;
-	padding: 10px 50px;
-	display: block;
-	min-height: auto;
-	max-width: 7cm;
-	text-align: center;
-	color: #35424a;
-	font-size: large;
-}
-
-.submit-button
-{
-	padding: auto;
-	background-color: transparent;
-	border: none;
-	background-image: url("https://ueacs.co.uk/media/arrow.png");
-	background-size: contain;
-	background-repeat: round;
-	width: 30px;
 }
 
 #names

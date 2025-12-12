@@ -97,23 +97,6 @@ input:focus
 
 }
 
-button
-{
-  margin: 2px;
-  padding: 5px;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  background-color: #6babd2;
-  transition: all .1s linear;
-}
-
-button:hover
-{
-  box-shadow: 0px 0px 5px 0px #797979;
-
-}
-
 .danger
 {
   background-color: red;
