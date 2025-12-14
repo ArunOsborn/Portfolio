@@ -1,22 +1,36 @@
 <main>
-    <h1>Welcome</h1>
-    <p>I'm Arun Osborn, a software engineer with enough free time to make a website about himself. As I expand this website, more apps, information and updates will be added.</p>
-    <p>Have fun exploring!</p>
-
-    <div class="links">
-        <ul>
-            <li>
-                <a matButton href="https://github.com/arunosborn/" target="_blank">
-                    <img src="/assets/third-party/github-mark-white.svg" class="link-logo">
-                    GitHub
-                </a>
-            </li>
-            <li>
-                <a matButton href="https://www.linkedin.com/in/arun-osborn-212769172/" target="_blank">
-                    <img src="/assets/third-party/LI-In-Bug.png" class="link-logo">
-                    LinkedIn
-                </a>
-            </li>
-        </ul>
-    </div>
+    <mat-card>
+        <mat-card-header>
+            <h1>
+                Welcome
+            </h1>
+            <img src="/assets/MUI Arun 17 Blue.png" id="author-image" matTooltip="Arun Osborn">
+        </mat-card-header>
+        <mat-card-content>
+            <p>I'm Arun Osborn, a software engineer with enough free time to make a website about himself. As I expand this website, more apps, information and updates will be added.</p>
+            <p>Have fun exploring!</p>
+        </mat-card-content>
+        <mat-card-actions class="links">
+            <ul>
+                <li>
+                    <a matButton href="https://github.com/arunosborn/" target="_blank">
+                        <div class="link-continer">
+                            <img src="/assets/third-party/github-mark-white.svg" class="link-logo">
+                            <span>
+                                GitHub
+                            </span>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a matButton href="https://www.linkedin.com/in/arun-osborn-212769172/" target="_blank">
+                        <img src="/assets/third-party/LI-In-Bug.png" class="link-logo">
+                        <span>
+                            LinkedIn
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </mat-card-actions>
+    </mat-card>
 </main>
