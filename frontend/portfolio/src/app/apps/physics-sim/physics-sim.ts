@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class PhysicsSim {
 	physObjects = signal<PhysObject[]>([]);
-    gravityAcceleration: number = 0.1;
+    gravityAcceleration: number = 0.11;
 
 	offsetX = 192; // Offset for physics window
 	offsetY = 84;
@@ -21,9 +21,9 @@ export class PhysicsSim {
     constructor()
     {
         const objects = [
-            new PhysObject({posX: 10, posY: 10, width: 20, height: 40, colour: 'red'}),
-            new PhysObject({posX: 200, posY: 200, width: 150, height: 150, colour: 'blue'}),
-            new PhysObject({posX: 190, posY: 60, width: 70, height: 70, colour: 'purple'}),
+            new PhysObject({posX: 10, posY: 520, width: 20, height: 40, colour: 'red', bounciness: 0.9}),
+            new PhysObject({posX: 200, posY: 200, width: 150, height: 150, colour: 'blue', bounciness: 0.1}),
+            new PhysObject({posX: 190, posY: 60, width: 70, height: 70, colour: 'purple', bounciness: 0.5}),
 
             new PhysObject({posX: 0, posY: 600, width: 600, height: 10, colour: 'darkgrey', isStatic: true, shape: "rectangle"})
         ];
@@ -53,7 +53,8 @@ export class PhysicsSim {
                 if (otherObj.isInSpace(obj.position.x, nextTickPosY + obj.size.height))
                 {
                     // Colliding with the top of another object
-                    obj.velocity.y = obj.velocity.y * -0.5; // Reverse and reduce velocity
+					const bounceVel = obj.velocity.y * - obj.bounciness;
+                    obj.velocity.y = Math.abs(bounceVel)<0.01 ? 0 : bounceVel; // Reverse and reduce velocity
                     obj.position.y = otherObj.position.y - obj.size.height;
                 }
             }
