@@ -23,9 +23,12 @@ export class PhysicsSim {
     constructor()
     {
         const objects = [
-            new PhysObject({posX: 10, posY: 520, width: 20, height: 40, colour: 'red', bounciness: 0.9}),
-            new PhysObject({posX: 200, posY: 200, width: 150, height: 150, colour: 'blue', bounciness: 0.1}),
-            new PhysObject({posX: 190, posY: 60, width: 70, height: 70, colour: 'purple', bounciness: 0.5}),
+            new PhysObject({posX: 290, posY: 0, width: 20, height: 40, colour: 'red', bounciness: 0.8}),
+            new PhysObject({posX: 220, posY: 300, width: 150, height: 150, colour: 'blue', bounciness: 0.1}),
+            new PhysObject({posX: 270, posY: 360, width: 70, height: 70, colour: 'purple', bounciness: 0.5}),
+
+            new PhysObject({posX: 70, posY: 360, width: 70, height: 70, colour: 'orange', shape: "rectangle", bounciness: 0.5}),
+
 
             new PhysObject({posX: 0, posY: 600, width: 600, height: 10, colour: 'darkgrey', isStatic: true, shape: "rectangle"})
         ];
