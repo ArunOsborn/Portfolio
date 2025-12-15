@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { PhysObject } from './classes/phys-object';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-physics-sim',
-	imports: [MatButtonModule],
+	imports: [MatButtonModule, MatCardModule, MatIconModule],
 	templateUrl: './physics-sim.html',
 	styleUrl: './physics-sim.scss',
 	changeDetection: ChangeDetectionStrategy.OnPush

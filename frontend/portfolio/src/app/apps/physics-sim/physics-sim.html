@@ -1,16 +1,45 @@
-<div id="physics-space">
-    @for (object of physObjects(); track object) {
-        <div
-            class="physics-object"
-            [style.left.px]="object.position.x+offsetX"
-            [style.top.px]="object.position.y+offsetY"
-            [style.width.px]="object.size.width"
-            [style.height.px]="object.size.height"
-            [style.backgroundColor]="object.colour"
-            [class]="object.shape"
-            (mousedown)="pickupObject($event, object)"
-            >
-        </div>
-    }
+<div class="container">
+    <div id="physics-space">
+        @for (object of physObjects(); track object) {
+            <div
+                class="physics-object"
+                [style.left.px]="object.position.x+offsetX"
+                [style.top.px]="object.position.y+offsetY"
+                [style.width.px]="object.size.width"
+                [style.height.px]="object.size.height"
+                [style.backgroundColor]="object.colour"
+                [class]="object.shape"
+                (mousedown)="pickupObject($event, object)"
+                >
+            </div>
+        }
+    </div>
+    
+    <mat-card>
+        <mat-card-header>
+            <h1>Physics Simulator V0.1 Control Panel</h1>
+        </mat-card-header>
+        <mat-card-content>
+            <button matButton (click)="isPaused.set(!isPaused())">
+                <mat-icon>
+                    {{ isPaused() ? 'play_arrow' : 'pause' }}
+                </mat-icon>
+                {{ isPaused() ? 'Resume' : 'Pause' }}
+            </button>
+
+            <div class="objects-control">
+                @for (object of physObjects(); track object) {
+                    <div class="object-info">
+                        <h3>Object {{ physObjects().indexOf(object) + 1 }}</h3>
+                        <p>Position: ({{ object.position.x.toFixed(2) }}, {{ object.position.y.toFixed(2) }})</p>
+                        <p>Velocity: ({{ object.velocity.x.toFixed(2) }}, {{ object.velocity.y.toFixed(2) }})</p>
+                        <p>Size: ({{ object.size.width }} x {{ object.size.height }})</p>
+                        <p>Colour: {{ object.colour }}</p>
+                        <p>Shape: {{ object.shape }}</p>
+                        <p>Bounciness: {{ object.bounciness }}</p>
+                    </div>
+                }
+            </div>
+        </mat-card-content>
+    </mat-card>
 </div>
-<button matButton (click)="isPaused.set(!isPaused())">{{ isPaused() ? 'Resume' : 'Pause' }}</button>

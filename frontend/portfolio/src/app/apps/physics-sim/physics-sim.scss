@@ -1,3 +1,10 @@
+.container
+{
+    display: flex;
+    flex-direction: row;
+    gap: 0 20px;
+}
+
 #physics-space
 {
     width: 600px;
@@ -22,4 +29,16 @@
 .circle
 {
     border-radius: 50%;
+}
+
+.objects-control
+{
+    display: flex;
+    flex-direction: column;
+    gap: 10px 0;
+    height: 400px;
+    overflow-y: auto;
+    background-color: rgb(71, 71, 71);
+    border-radius: 3px;
+    padding: 5px;
 }
