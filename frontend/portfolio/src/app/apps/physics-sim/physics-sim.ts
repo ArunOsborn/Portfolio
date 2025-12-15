@@ -53,7 +53,7 @@ export class PhysicsSim {
                 if (otherObj.isInSpace(obj.position.x, nextTickPosY + obj.size.height))
                 {
                     // Colliding with the top of another object
-                    obj.velocity.y = 0;
+                    obj.velocity.y = obj.velocity.y * -0.5; // Reverse and reduce velocity
                     obj.position.y = otherObj.position.y - obj.size.height;
                 }
             }
