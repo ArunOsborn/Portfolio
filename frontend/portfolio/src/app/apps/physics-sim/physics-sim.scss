@@ -34,11 +34,16 @@
 .objects-control
 {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 10px 0;
     height: 400px;
     overflow-y: auto;
     background-color: rgb(71, 71, 71);
     border-radius: 3px;
     padding: 5px;
+}
+
+.objects-control .object-info
+{
+    min-width: 200px;
 }
