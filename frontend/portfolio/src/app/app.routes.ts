@@ -5,7 +5,7 @@ import { PhysicsSim } from './apps/physics-sim/physics-sim';
 
 export const routes: Routes = [
     {
-        path: '',
+        path: 'home',
         component: HomePage
     },
     {
@@ -15,5 +15,8 @@ export const routes: Routes = [
     {
         path: 'apps/physics-sim',
         component: PhysicsSim
-    }
+    },
+
+    // Redirects
+    { path: '**', component: HomePage},
 ];

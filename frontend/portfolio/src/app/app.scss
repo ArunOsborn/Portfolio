@@ -1,0 +1,14 @@
+@use './styles/variables.scss' as variables;
+
+.menu-dropdownn-icon
+{
+    float: right;
+    margin-top: 4px;
+}
+
+.active
+{
+	box-sizing: border-box;
+	background: linear-gradient(0deg, rgba(variables.$secondary,0.3) 0%, rgba(variables.$secondary,0.1) 86%);
+	padding-top: 5px;
+}
