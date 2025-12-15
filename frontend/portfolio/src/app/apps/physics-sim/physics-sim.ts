@@ -13,6 +13,9 @@ export class PhysicsSim {
 	physObjects = signal<PhysObject[]>([]);
     gravityAcceleration: number = 0.01;
 
+	offsetX = 192; // Offset for physics window
+	offsetY = 84;
+
     isPaused = signal(false);
 
     constructor()
@@ -20,13 +23,15 @@ export class PhysicsSim {
         const objects = [
             new PhysObject({posX: 10, posY: 10, width: 20, height: 40, colour: 'red'}),
             new PhysObject({posX: 200, posY: 200, width: 150, height: 150, colour: 'blue'}),
+            new PhysObject({posX: 190, posY: 60, width: 70, height: 70, colour: 'purple'}),
+
             new PhysObject({posX: 0, posY: 600, width: 600, height: 10, colour: 'darkgrey', isStatic: true, shape: "rectangle"})
         ];
         this.physObjects.set(objects);
 
         setInterval(() => {
             this.simulateTick();
-        }, 10);
+        }, 1);
     }
 
     simulateTick()

@@ -2,8 +2,8 @@
     @for (object of physObjects(); track object) {
         <div
             class="physics-object"
-            [style.left.px]="object.position.x"
-            [style.top.px]="object.position.y"
+            [style.left.px]="object.position.x+offsetX"
+            [style.top.px]="object.position.y+offsetY"
             [style.width.px]="object.size.width"
             [style.height.px]="object.size.height"
             [style.backgroundColor]="object.colour"
