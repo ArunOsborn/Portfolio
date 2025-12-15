@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class PhysicsSim {
 	physObjects = signal<PhysObject[]>([]);
-    gravityAcceleration: number = 0.01;
+    gravityAcceleration: number = 0.1;
 
 	offsetX = 192; // Offset for physics window
 	offsetY = 84;
@@ -65,4 +65,36 @@ export class PhysicsSim {
 
         this.physObjects.set([...objects]);
     }
+
+	pickupObject(event: MouseEvent, obj: PhysObject)
+	{
+		const mouseX = event.clientX - this.offsetX;
+		const mouseY = event.clientY - this.offsetY;
+		const wasStatic = obj.isStatic;
+
+		if (obj.isInSpace(mouseX, mouseY))
+		{
+			console.log("Picked up object:", obj);
+			obj.isStatic = true;
+		}
+
+		const mouseMoveListener = (moveEvent: MouseEvent) => {
+			const moveX = moveEvent.clientX - this.offsetX;
+			const moveY = moveEvent.clientY - this.offsetY;
+			obj.position.x = moveX - obj.size.width/2;
+			obj.position.y = moveY - obj.size.height/2;
+		}
+		const mouseUpListener = (upEvent: MouseEvent) => {
+			window.removeEventListener('mousemove', mouseMoveListener);
+			window.removeEventListener('mouseup', mouseUpListener);
+			obj.isStatic = wasStatic;
+			console.log("Dropped object:", obj);
+		}
+		window.addEventListener('mousemove', mouseMoveListener);
+		window.addEventListener('mouseup', mouseUpListener);
+		this.physObjects.set([...this.physObjects()]);
+
+	}
+
+
 }

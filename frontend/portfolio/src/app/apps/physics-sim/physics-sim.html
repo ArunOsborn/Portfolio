@@ -8,6 +8,7 @@
             [style.height.px]="object.size.height"
             [style.backgroundColor]="object.colour"
             [class]="object.shape"
+            (mousedown)="pickupObject($event, object)"
             >
         </div>
     }

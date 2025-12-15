@@ -13,6 +13,12 @@
     position: absolute;
 }
 
+.physics-object:hover
+{
+    opacity: 0.8;
+    cursor: grab;
+}
+
 .circle
 {
     border-radius: 50%;
