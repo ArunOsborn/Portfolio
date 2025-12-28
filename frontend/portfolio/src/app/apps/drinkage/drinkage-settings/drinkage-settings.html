@@ -1,0 +1,18 @@
+<h3>Game Setttings</h3>
+
+<mat-accordion>
+    @for (categoryName of categoryNames; track categoryName)
+    {
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                Chance of {{categoryName}} Card
+            </mat-expansion-panel-header>
+            @for (line of data.categories[categoryName]; track line)
+            {
+                <p>
+                    {{line}}
+                </p>
+            }
+        </mat-expansion-panel>
+    }
+</mat-accordion>

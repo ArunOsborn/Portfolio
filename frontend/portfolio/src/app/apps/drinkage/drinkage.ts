@@ -1,9 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { DrinkageSettings } from './drinkage-settings/drinkage-settings';
 
 interface CardButton {
 	label: string;
@@ -14,9 +16,11 @@ interface CardButton {
 	selector: 'app-drinkage',
 	imports: [CommonModule, FormsModule, MatButtonModule, MatIconModule],
 	templateUrl: './drinkage.html',
-	styleUrls: ['../legacy css/style game.css'],
+	styleUrls: ['./drinkage.scss','../legacy css/style game.css'],
 })
 export class Drinkage implements OnInit {
+	dialog: MatDialog = inject(MatDialog);
+
 	@ViewChild('card', { static: false }) cardElement!: ElementRef;
 	@ViewChild('nameInput', { static: false }) nameInputElement!: ElementRef;
 	@ViewChild('namesContainer', { static: false }) namesContainerElement!: ElementRef;
@@ -241,5 +245,20 @@ export class Drinkage implements OnInit {
 	removeName(name: string): void {
 		this.names = this.names.filter(n => n != name);
 		console.log("Item removed");
+	}
+
+	openSettingsDialog()
+	{
+		const dialogRef = this.dialog.open(DrinkageSettings, {
+			width: '95%',
+			height: '95%',
+			data: { categories: {common: this.common, uncommon: this.uncommon, rare: this.rare, punishments: this.punishments}}
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.names = result.names;
+			}
+		});
 	}
 }
