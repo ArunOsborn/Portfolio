@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DrinkageSettings } from './drinkage-settings/drinkage-settings';
+import { DrinkageCardPack } from './drinkage-card-pack/drinkage-card-pack';
 
 interface CardButton {
 	label: string;
@@ -18,7 +19,7 @@ interface CardButton {
 	templateUrl: './drinkage.html',
 	styleUrls: ['./drinkage.scss','../legacy css/style game.css'],
 })
-export class Drinkage implements OnInit {
+export class Drinkage {
 	dialog: MatDialog = inject(MatDialog);
 
 	@ViewChild('card', { static: false }) cardElement!: ElementRef;
@@ -35,32 +36,14 @@ export class Drinkage implements OnInit {
 	cardContent: string = "Welcome To Drinkage!";
 	cardButtons: CardButton[] = [];
 	
-	// Game data
-	common: string[] = [];
-	uncommon: string[] = [];
-	rare: string[] = [];
-	punishments: string[] = [];
+	// Settings
+	enableAssasination: boolean = true;
 
-	constructor(private http: HttpClient) {}
+	// Game Data
+	cardPack: DrinkageCardPack = new DrinkageCardPack({groups: {}, punishments: []});
 
-	ngOnInit(): void {
-		// Load text files from assets
-		this.http.get('/assets/drinkage/common.txt', { responseType: 'text' }).subscribe(text => {
-			this.common = text.split('\n').filter(line => line.trim());
-		});
-		
-		this.http.get('/assets/drinkage/uncommon.txt', { responseType: 'text' }).subscribe(text => {
-			this.uncommon = text.split('\n').filter(line => line.trim());
-		});
-		
-		this.http.get('/assets/drinkage/rare.txt', { responseType: 'text' }).subscribe(text => {
-			this.rare = text.split('\n').filter(line => line.trim());
-		});
-		
-		this.http.get('/assets/drinkage/punishments.txt', { responseType: 'text' }).subscribe(text => {
-			this.punishments = text.split('\n').filter(line => line.trim());
-		});
-	}
+	constructor(private http: HttpClient)
+	{}
 
 
 	specialCompleteScreen(): void {
@@ -69,7 +52,7 @@ export class Drinkage implements OnInit {
 	}
 
 	showRandomPunishment(): void {
-		const instruction = this.punishments[Math.floor(Math.random() * this.punishments.length)];
+		const instruction = this.cardPack.punishments[Math.floor(Math.random() * this.cardPack.punishments.length)];
 		this.cardContent = this.prepareInstruction(instruction);
 		this.cardButtons = [];
 	}
@@ -173,7 +156,7 @@ export class Drinkage implements OnInit {
 		const rand = Math.random();
 		const chanceOfCommon = 0.4;
 		const chanceOfUncommon = 0.2;
-		const chanceOfAssasination = this.markedPeople.length / 50;
+		const chanceOfAssasination = this.enableAssasination ? this.markedPeople.length / 50 : 0;
 		
 		let instruction = "";
 		
@@ -205,28 +188,9 @@ export class Drinkage implements OnInit {
 			
 			this.cardContent = instruction;
 		}
-		else if (rand < chanceOfAssasination + chanceOfCommon) {
-			// Common cards
-			instruction = this.common[Math.floor(Math.random() * this.common.length)];
-			instruction = this.prepareInstruction(instruction);
-			
-			this.cardContent = instruction;
-		}
-		else if (rand < chanceOfAssasination + chanceOfCommon + chanceOfUncommon) {
-			// Uncommon cards
-			instruction = this.uncommon[Math.floor(Math.random() * this.uncommon.length)];
-			instruction = this.prepareInstruction(instruction);
-			
-			this.cardContent = instruction;
-		}
 		else {
-			// Rare cards
-			const index = Math.floor(Math.random() * this.rare.length);
-			instruction = this.rare[index];
-			instruction = this.prepareInstruction(instruction);
-
-			this.cardContent = instruction;
-			this.rare.splice(index, 1);
+			instruction = this.cardPack.getNextCard();
+			this.cardContent = this.prepareInstruction(instruction);
 		}
 	}
 
@@ -252,7 +216,7 @@ export class Drinkage implements OnInit {
 		const dialogRef = this.dialog.open(DrinkageSettings, {
 			width: '95%',
 			height: '95%',
-			data: { categories: {common: this.common, uncommon: this.uncommon, rare: this.rare, punishments: this.punishments}}
+			data: { categories: this.cardPack.groups, punishments: this.cardPack.punishments }
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
