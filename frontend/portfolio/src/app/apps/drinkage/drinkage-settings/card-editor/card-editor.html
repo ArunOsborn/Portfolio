@@ -1,0 +1,11 @@
+@for (card of cardList; track card; let i = $index)
+{
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Card</mat-label>
+        <textarea
+            matInput
+            [(ngModel)]="cardList[i]"
+            (ngModelChange)="onCardChange($event, i)"
+        ></textarea>
+    </mat-form-field>
+}

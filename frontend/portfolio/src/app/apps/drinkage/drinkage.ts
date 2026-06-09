@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { DrinkageSettings } from './drinkage-settings/drinkage-settings';
+import { DrinkageSettings, DrinkageSettingsResult } from './drinkage-settings/drinkage-settings';
 import { DrinkageCardPack } from './drinkage-card-pack/drinkage-card-pack';
 
 interface CardButton {
@@ -215,13 +215,16 @@ export class Drinkage {
 	{
 		const dialogRef = this.dialog.open(DrinkageSettings, {
 			width: '95%',
+			maxWidth: '95%',
 			height: '95%',
 			data: { categories: this.cardPack.groups, punishments: this.cardPack.punishments }
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				this.names = result.names;
+				const settings = result as DrinkageSettingsResult;
+				this.cardPack.groups = settings.categories;
+				this.cardPack.punishments = settings.punishments;
 			}
 		});
 	}

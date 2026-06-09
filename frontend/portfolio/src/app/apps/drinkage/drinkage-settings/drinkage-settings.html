@@ -1,18 +1,102 @@
-<h3>Game Setttings</h3>
+<section class="card-group-editor" aria-labelledby="card-group-editor-title">
+    <header class="editor-header">
+        <div>
+            <h2 id="card-group-editor-title">Card group editor</h2>
+            <p>Select a card group to edit its entries. Use one line per card.</p>
+        </div>
+        <mat-slide-toggle
+            class="field-group field-group--toggle"
+            [checked]="rawView"
+            (change)="rawView = !rawView"
+        >
+            {{ rawView ? "Raw View" : "Default View" }}
+        </mat-slide-toggle>
+        <div class="editor-actions">
+            <button type="button" mat-stroked-button (click)="cancel()">Cancel</button>
+            <button type="button" mat-flat-button (click)="save()">Save changes</button>
+        </div>
+    </header>
 
-<mat-accordion>
-    @for (categoryName of categoryNames; track categoryName)
-    {
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                Chance of {{categoryName}} Card
-            </mat-expansion-panel-header>
-            @for (line of data.categories[categoryName]; track line)
-            {
-                <p>
-                    {{line}}
-                </p>
+    <div class="editor-layout">
+        <section
+            class="group-cards"
+            aria-label="Available card groups"
+            [class.group-cards--selection-active]="hasSelection()"
+        >
+            @for (group of editableGroups(); track group.key) {
+                <button
+                    type="button"
+                    mat-button
+                    class="group-card"
+                    [class.group-card--selected]="selectedGroupKey() === group.key"
+                    [class.group-card--dimmed]="hasSelection() && selectedGroupKey() !== group.key"
+                    [class.group-card--punishments]="group.kind === 'punishments'"
+                    [attr.aria-pressed]="selectedGroupKey() === group.key"
+                    (click)="selectGroup(group.key)"
+                >
+                    <span class="group-card__label">{{ group.label }}</span>
+                    <span class="group-card__meta">{{ cardCount(group) }} cards</span>
+                </button>
             }
-        </mat-expansion-panel>
-    }
-</mat-accordion>
+        </section>
+
+        @if (selectedGroup(); as group) {
+            <section class="editor-panel" aria-live="polite">
+                <header class="editor-panel__header">
+                    <div>
+                        <h3>{{ group.label }}</h3>
+                        <p>
+                            @if (group.kind === 'punishments') {
+                                Penalty cards shown one per line.
+                            } @else {
+                                {{ cardCount(group) }} cards configured for this group.
+                            }
+                        </p>
+                    </div>
+                </header>
+
+                @if (group.kind === 'category') {
+                    <div class="editor-panel__settings">
+                        <mat-form-field class="field-group" appearance="outline" subscriptSizing="dynamic">
+                            <mat-label>Chance</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                [inputMode]="'decimal'"
+                                [value]="group.chance ?? 0"
+                                (input)="updateChanceFromEvent($event)"
+                            />
+                        </mat-form-field>
+
+                        <mat-slide-toggle
+                            class="field-group field-group--toggle"
+                            [checked]="group.allowRepeats"
+                            (change)="updateAllowRepeats($event.checked)"
+                        >
+                            Allow repeats
+                        </mat-slide-toggle>
+                    </div>
+                }
+
+                @if (rawView)
+                {
+                    <mat-form-field class="editor-panel__field" appearance="outline" subscriptSizing="dynamic">
+                        <mat-label>Cards</mat-label>
+                        <textarea
+                            matInput
+                            [id]="group.key + '-editor'"
+                            rows="18"
+                            [value]="group.editorText"
+                            (input)="updateSelectedTextFromEvent($event)"
+                        ></textarea>
+                    </mat-form-field>
+                }
+                @else {
+                    <app-card-editor [cards]="group.editorText" (cardsChange)="updateSelectedTextFromEvent($event)"></app-card-editor>
+                }
+            </section>
+        }
+    </div>
+</section>
