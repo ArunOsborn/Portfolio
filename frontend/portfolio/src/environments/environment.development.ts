@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    cookageApiUrl: "localhost:3000",
+    cookageApiUrl: "http://localhost:5000",
 };

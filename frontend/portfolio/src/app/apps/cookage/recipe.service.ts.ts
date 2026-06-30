@@ -11,7 +11,7 @@ export class RecipeService {
 	loadedRecipes: any[] = [];
 
 	async searchRecipes(query: string): Promise<any> {
-		const recipes = await lastValueFrom(this.http.get(`${environment.cookageApiUrl}/recipes/search?query=${query}`));
+		const recipes = await lastValueFrom(this.http.get(`${environment.cookageApiUrl}/search?q=${query}`));
 		this.loadedRecipes = recipes as any[];
 		return recipes;
 	}
