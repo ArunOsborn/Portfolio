@@ -1,12 +1,14 @@
 <app-cookage-search-bar></app-cookage-search-bar>
 
 <div id="recipe-results">
-	<ul>
+	<div class="recipes">
 		@for (recipe of recipeService.loadedRecipes; track recipe;) {
-			<li>
-				<a mat-button>{{recipe.name}}</a>
-				<p>Time to cook: {{formatterService.formatMinutes(recipe.total_time)}}</p>
-			</li>
+			<article class="recipe-card">
+				<a [routerLink]="'/apps/cookage/' + recipe.id">
+					<h4>{{recipe.name}}</h4>
+					<p>Time to cook: {{formatterService.formatMinutes(recipe.total_time)}}</p>
+				</a>
+			</article>
 		}
-	</ul>
+	</div>
 </div>
