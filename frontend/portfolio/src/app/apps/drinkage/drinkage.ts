@@ -39,6 +39,14 @@ export class Drinkage {
 	// Settings
 	enableAssasination: boolean = true;
 
+	// Swipe/drag state
+	pointerId: number | null = null;
+	private startX = 0;
+	cardTransform: string = 'translateX(0px)';
+	cardTransition: string = 'none';
+	dragging: boolean = false;
+	private swipeThreshold: number = 120;
+
 	// Game Data
 	cardPack: DrinkageCardPack = new DrinkageCardPack({groups: {}, punishments: []});
 
@@ -227,5 +235,55 @@ export class Drinkage {
 				this.cardPack.punishments = settings.punishments;
 			}
 		});
+	}
+
+	onPointerDown(event: PointerEvent): void {
+		if (!this.cardElement) return;
+		this.dragging = true;
+		this.pointerId = event.pointerId;
+		this.startX = event.clientX;
+		this.cardTransition = 'none';
+		try { this.cardElement.nativeElement.setPointerCapture(event.pointerId); } catch (e) {}
+		event.preventDefault();
+	}
+
+	onPointerMove(event: PointerEvent): void {
+		if (!this.dragging || this.pointerId !== event.pointerId) return;
+		const delta = event.clientX - this.startX;
+		const translate = Math.min(0, delta);
+		this.cardTransform = `translateX(${translate}px)`;
+	}
+
+	onPointerUp(event: PointerEvent): void {
+		if (!this.dragging || this.pointerId !== event.pointerId) return;
+		this.dragging = false;
+		try { this.cardElement.nativeElement.releasePointerCapture(event.pointerId); } catch (e) {}
+		const match = this.cardTransform.match(/translateX\((-?\d+(?:\.\d+)?)px\)/);
+		const current = match ? Number(match[1]) : 0;
+		if (current < -this.swipeThreshold) {
+			const screenW = window.innerWidth;
+			this.cardTransition = 'transform 200ms ease-out';
+			this.cardTransform = `translateX(-${screenW}px)`;
+			this.nextCard();
+			// place off-screen right without transition
+			this.cardTransition = 'none';
+			this.cardTransform = `translateX(${screenW}px)`;
+			// allow layout then animate into view from right
+			requestAnimationFrame(() => {
+				this.cardTransition = 'transform 300ms ease-out';
+				this.cardTransform = 'translateX(0px)';
+				setTimeout(() => { this.cardTransition = 'none'; }, 320);
+			});
+		} else {
+			this.cardTransition = 'transform 200ms ease-out';
+			this.cardTransform = 'translateX(0px)';
+			setTimeout(() => { this.cardTransition = 'none'; }, 200);
+		}
+		this.pointerId = null;
+	}
+
+	onPointerCancel(event: PointerEvent): void {
+		if (!this.dragging) return;
+		this.onPointerUp(event);
 	}
 }

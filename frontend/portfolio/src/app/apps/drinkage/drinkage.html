@@ -5,7 +5,16 @@
         </h2>
         <button mat-icon-button (click)="openSettingsDialog()"><mat-icon>settings</mat-icon></button>
     </div>
-    <div class="card" #card>
+    <div
+        class="card"
+        #card
+        (pointerdown)="onPointerDown($event)"
+        (pointermove)="onPointerMove($event)"
+        (pointerup)="onPointerUp($event)"
+        (pointercancel)="onPointerCancel($event)"
+        [style.transform]="cardTransform"
+        [style.transition]="cardTransition"
+    >
         <p [innerHTML]="cardContent"></p>
         @for (btn of cardButtons; track btn.label) {
             <button (click)="btn.action()">{{ btn.label }}</button>
