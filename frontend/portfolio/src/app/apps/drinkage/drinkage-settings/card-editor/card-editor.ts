@@ -1,36 +1,40 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
 	selector: 'app-card-editor',
-	imports: [MatFormFieldModule, MatInputModule, FormsModule],
+	imports: [MatButtonModule, MatFormFieldModule, MatInputModule],
 	templateUrl: './card-editor.html',
 	styleUrl: './card-editor.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardEditor {
-	private _cardList: string[] = [];
+	readonly cards = input('');
+	readonly cardsChange = output<string>();
+	readonly cardList = computed(() => this.cards().split(/\r?\n/));
 
-	get cardList(): string[]
-	{
-		return this._cardList;
+	updateCard(value: string, index: number): void {
+		const cards = this.cardList();
+		cards[index] = value;
+		this.cardsChange.emit(cards.join('\n'));
 	}
 
-	set cardList(value: string[])
-	{
-		this._cardList = value;
-		this.cardsChange.emit(this._cardList.join("\n"));
+	updateCardFromEvent(event: Event, index: number): void {
+		const target = event.target;
+		if (target instanceof HTMLTextAreaElement) {
+			this.updateCard(target.value, index);
+		}
 	}
 
-	@Input() set cards(value: string | undefined) {
-		this.cardList = value ? value.split('\n') : [];
+	addCard(): void {
+		this.cardsChange.emit(`${this.cards()}\n`);
 	}
 
-	@Output() cardsChange = new EventEmitter<string>();
-
-	onCardChange(value: string, index: number): void {
-		this._cardList[index] = value;
-		this.cardsChange.emit(this._cardList.join('\n'));
+	removeCard(index: number): void {
+		const cards = this.cardList();
+		cards.splice(index, 1);
+		this.cardsChange.emit(cards.join('\n'));
 	}
 }

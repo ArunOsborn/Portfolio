@@ -1,11 +1,25 @@
-@for (card of cardList; track card; let i = $index)
-{
-    <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <mat-label>Card</mat-label>
-        <textarea
-            matInput
-            [(ngModel)]="cardList[i]"
-            (ngModelChange)="onCardChange($event, i)"
-        ></textarea>
-    </mat-form-field>
-}
+<div class="card-list">
+	@for (card of cardList(); track $index) {
+		<div class="card-list__item">
+			<mat-form-field appearance="outline" subscriptSizing="dynamic">
+				<mat-label>Card {{ $index + 1 }}</mat-label>
+				<textarea
+					matInput
+					rows="2"
+					[value]="card"
+					(input)="updateCardFromEvent($event, $index)"
+				></textarea>
+			</mat-form-field>
+			<button
+				mat-button
+				type="button"
+				[attr.aria-label]="'Remove card ' + ($index + 1)"
+				(click)="removeCard($index)"
+			>
+				Remove
+			</button>
+		</div>
+	}
+
+	<button mat-stroked-button type="button" (click)="addCard()">Add card</button>
+</div>

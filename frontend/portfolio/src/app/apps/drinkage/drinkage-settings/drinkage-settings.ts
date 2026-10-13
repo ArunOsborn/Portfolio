@@ -1,9 +1,10 @@
-import { Component, computed, inject, Optional, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CardGroup } from '../drinkage-card-pack/drinkage-card-pack';
 import { CardEditor } from './card-editor/card-editor';
@@ -30,64 +31,58 @@ export interface DrinkageSettingsResult {
 @Component({
 	selector: 'app-drinkage-settings',
 	imports: [
+		CommonModule,
 		MatButtonModule,
 		MatFormFieldModule,
 		MatInputModule,
+		MatSelectModule,
 		MatSlideToggleModule,
-		CommonModule,
-		CardEditor
+		CardEditor,
 	],
 	templateUrl: './drinkage-settings.html',
 	styleUrl: './drinkage-settings.scss',
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DrinkageSettings {
 	readonly data = inject<DrinkageSettingsData>(MAT_DIALOG_DATA);
-	private readonly dialogRef = inject(MatDialogRef<DrinkageSettings, DrinkageSettingsResult>);
-	rawView: boolean = false;
+	private readonly dialogRef = inject<
+		MatDialogRef<DrinkageSettings, DrinkageSettingsResult | undefined>
+	>(MatDialogRef);
 
-	readonly editableGroups = signal<EditableCardGroup[]>(this.buildEditableGroups());
+	readonly rawView = signal(false);
+	readonly editableGroups = signal(this.buildEditableGroups());
 	readonly selectedGroupKey = signal<string | null>(this.editableGroups()[0]?.key ?? null);
 	readonly selectedGroup = computed(
-		() => this.editableGroups().find(group => group.key === this.selectedGroupKey()) ?? null
+		() => this.editableGroups().find(group => group.key === this.selectedGroupKey()) ?? null,
 	);
-	readonly hasSelection = computed(() => this.selectedGroup() !== null);
 
 	selectGroup(groupKey: string): void {
 		this.selectedGroupKey.set(groupKey);
-	}
-
-	updateSelectedTextFromEvent(event: Event|string): void {
-		if (typeof event === "string")
-		{
-			this.updateSelectedText(event);
-		}
-		else
-		{
-			const target = event.target as HTMLTextAreaElement | null;
-			this.updateSelectedText(target?.value ?? '');
-		}
 	}
 
 	updateSelectedText(text: string): void {
 		this.updateGroup(this.selectedGroupKey(), group => ({ ...group, editorText: text }));
 	}
 
-	updateChanceFromEvent(event: Event): void {
-		const target = event.target as HTMLInputElement | null;
-		this.updateChance(target?.value ?? '0');
+	updateSelectedTextFromEvent(event: Event): void {
+		const target = event.target;
+		if (target instanceof HTMLTextAreaElement) {
+			this.updateSelectedText(target.value);
+		}
 	}
 
-	updateChance(value: string): void {
-		const chance = Number(value);
+	updateChanceFromEvent(event: Event): void {
+		const target = event.target;
+		if (!(target instanceof HTMLInputElement)) {
+			return;
+		}
+
+		const value = target.value.trim();
+		const chance = value === '' ? null : Number(value);
 		this.updateGroup(this.selectedGroupKey(), group => ({
 			...group,
-			chance: Number.isFinite(chance) ? Math.max(0, chance) : 0,
+			chance: chance === null || !Number.isFinite(chance) ? null : Math.max(0, chance),
 		}));
-	}
-
-	updateAllowRepeatsFromEvent(event: Event): void {
-		const target = event.target as HTMLInputElement | null;
-		this.updateAllowRepeats(target?.checked ?? false);
 	}
 
 	updateAllowRepeats(allowRepeats: boolean): void {
@@ -151,12 +146,12 @@ export class DrinkageSettings {
 		groupKey: string | null,
 		updater: (group: EditableCardGroup) => EditableCardGroup,
 	): void {
-		if (!groupKey) {
+		if (groupKey === null) {
 			return;
 		}
 
 		this.editableGroups.update(groups =>
-			groups.map(group => (group.key === groupKey ? updater(group) : group))
+			groups.map(group => (group.key === groupKey ? updater(group) : group)),
 		);
 	}
 
@@ -171,15 +166,5 @@ export class DrinkageSettings {
 		return value
 			.replace(/[-_]+/g, ' ')
 			.replace(/\b\w/g, letter => letter.toUpperCase());
-	}
-
-	constructor(@Optional() public dialogRef: MatDialogRef<DrinkageSettings>, @Optional() @Inject(MAT_DIALOG_DATA) private data: any, private snackBar: MatSnackBar, private dialog: MatDialog) {
-		this.categories = this.data.categories;
-		this.categoryNames = Object.keys(this.categories);
-	}
-
-	close()
-	{
-		this.dialogRef.close("hi");
 	}
 }
