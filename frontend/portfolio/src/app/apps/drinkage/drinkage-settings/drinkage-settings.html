@@ -5,9 +5,20 @@
     {
         <mat-expansion-panel>
             <mat-expansion-panel-header>
-                Chance of {{categoryName}} Card
+                <mat-panel-title>
+                    Chance of {{categoryName}} Card
+                </mat-panel-title>
+                @if (categoryName!="punishments")
+                {
+                    <mat-panel-description>
+                    <mat-slider min="0" max="100" step="1" (click)="$event.stopPropagation()" (change)="$event.stopPropagation()">
+                            <input matSliderThumb [(value)]="categories[categoryName].weight">
+                        </mat-slider>
+                        {{categories[categoryName].weight | number}}%
+                    </mat-panel-description>
+                }
             </mat-expansion-panel-header>
-            @for (line of data.categories[categoryName]; track line)
+            @for (line of categories[categoryName].cards; track line)
             {
                 <p>
                     {{line}}

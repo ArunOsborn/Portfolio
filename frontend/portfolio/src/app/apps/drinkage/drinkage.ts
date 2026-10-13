@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DrinkageSettings } from './drinkage-settings/drinkage-settings';
 import { DrinkageCardPack } from './drinkage-card-pack/drinkage-card-pack';
+import { GeneralService } from '../../services/general.service';
 
 interface CardButton {
 	label: string;
@@ -21,6 +22,7 @@ interface CardButton {
 })
 export class Drinkage {
 	dialog: MatDialog = inject(MatDialog);
+	generalService: GeneralService = inject(GeneralService);
 
 	@ViewChild('card', { static: false }) cardElement!: ElementRef;
 	@ViewChild('nameInput', { static: false }) nameInputElement!: ElementRef;
@@ -154,9 +156,11 @@ export class Drinkage {
 		this.cardButtons = [];
 		
 		const rand = Math.random();
-		const chanceOfCommon = 0.4;
-		const chanceOfUncommon = 0.2;
-		const chanceOfAssasination = this.enableAssasination ? this.markedPeople.length / 50 : 0;
+		const chances: {[key: string]: number} = this.generalService.getChancesFromWeights({common: this.commonWeight, uncommon: this.uncommonWeight, rar: this.rareWeight});
+		const chanceOfCommon = chances["common"];
+		const chanceOfUncommon = chances["uncommon"];
+		const chancesOfRare = chances["rare"];
+		const chanceOfAssasination = this.markedPeople.length / 50;
 		
 		let instruction = "";
 		
@@ -216,12 +220,22 @@ export class Drinkage {
 		const dialogRef = this.dialog.open(DrinkageSettings, {
 			width: '95%',
 			height: '95%',
-			data: { categories: this.cardPack.groups, punishments: this.cardPack.punishments }
+			data: {
+				categories: {
+					common: { cards: this.common, weight: this.commonWeight },
+					uncommon: { cards: this.uncommon, weight: this.uncommonWeight },
+					rare: { cards: this.rare, weight: this.rareWeight },
+					punishments: { cards: this.punishments}
+				}
+			}
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
+			console.log(`${JSON.stringify(result)}`);
 			if (result) {
-				this.names = result.names;
+				this.commonWeight = result.common.weight;
+				this.uncommonWeight = result.uncommon.weight;
+				this.rareWeight = result.rare.weight;
 			}
 		});
 	}
