@@ -1,0 +1,7 @@
+<mat-form-field class="search-bar" appearance="outline">
+    <mat-label>Search for a recipe</mat-label>
+    <input matInput placeholder="Enter a recipe name" [(ngModel)]="searchQuery" (keyup.enter)="searchRecipes()">
+    <button mat-icon-button matSuffix (click)="searchRecipes()">
+        <mat-icon>search</mat-icon>
+    </button>
+</mat-form-field>
